@@ -58,14 +58,15 @@ Content-Type: application/json
 
 
 ### Upload Gambar
-POST {{{{BackendApp_HostAddress}}}}/api/v1/products/P003/image
+POST {{BackendApp_HostAddress}}/api/v1/products/P002/image
 Content-Type: multipart/form-data; boundary=KodaStore
 
 --KodaStore
 Content-Disposition: form-data; name="file"; filename="valid_product.jpg"
 Content-Type: image/jpeg
 
-< E:\Upload\valid_product.jpg
+< C:\Upload\valid_product.jpg
+--KodaStore--
 
 #         new Product("P001", "Kaos Polos Cotton Combed", 75000m, 150, "Atasan"),
 #         new Product("P002", "Baju Distro Grafis", 150000m, 100, "Atasan"),

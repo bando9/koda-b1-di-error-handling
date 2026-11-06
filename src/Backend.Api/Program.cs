@@ -1,5 +1,7 @@
 using Backend.Api.Data;
+using Backend.Api.Files;
 using Backend.Api.Interfaces;
+using Backend.Api.Middlewares;
 using Backend.Api.Repositories;
 using Backend.Api.Services;
 
@@ -10,6 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(
+    option =>
+    {
+        option.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Instance ??= context.HttpContext.Request.Path.Value;
+
+            context.ProblemDetails.Extensions["traceId"] = context.HttpContext.TraceIdentifier;
+        };
+    }
+);
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 // builder.Services.AddSingleton<InMemoryProductCatalog>();
 
 // builder.Services.AddSingleton<IProductRepository,InMemoryProductRepository>();
@@ -20,8 +34,11 @@ builder.Services.AddScoped<IProductRepository, SqlProductRepository>();
 
 // * Service
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductImageStorage, LocalProductImageStorage>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
