@@ -1,6 +1,7 @@
 using Backend.Api.DTOs;
 using Backend.Api.Interfaces;
 using Backend.Api.Models;
+using Backend.Api.Repositories;
 
 namespace Backend.Api.Services;
 
